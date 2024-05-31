@@ -1,10 +1,10 @@
 #!/bin/sh
 set -eu
 
-TOOLCHAIN=$(dirname "$(dirname "$(realpath "$0")")")
+TOOLCHAIN="$(dirname "$(realpath "$0")")"
 RESOURCE_DIR=${TOOLCHAIN}/resource
 SYSROOT=${TOOLCHAIN}/sysroot
-TARGET=aarch64-linux-android21
+TARGET=${TAARGET-aarch64-linux-android21}
 
 CLANG=${CLANG-clang}
 CLANGXX=${CLANGXX-clang++}
@@ -33,7 +33,7 @@ clang | clang++ | *-linux-android*-clang | *-linux-android*-clang++)
 				-isystem "${SYSROOT}/usr/include" \
 				-isystem "${sys_include_dir}"
 		elif ${BIN} -v 2>&1 | grep -q alpine; then
-			set -- "$@" -B "${TOOLCHAIN}/wrappers/alpine"
+			set -- "$@" -B "${TOOLCHAIN}/../alpine/bin"
 		elif ${BIN} -v 2>&1 | grep -q zig; then
 			set -- "$@" -B "${TOOLCHAIN}/wrappers/zig"
 		fi

@@ -1,3 +1,5 @@
 build
 output
 sources
+wrappers/android/sysroot
+wrappers/android/resource
