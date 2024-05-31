@@ -7,16 +7,15 @@ Features:
 - Build with NDK
 - Statically linked binaries oriented.
 
-## Work flow
+Work flow
 
 ```mermaid
 graph TD
-    s1[setup toolchain] -->
-    s2[source build config] -->
-    s3[build depends] -->
-    s4[configure] -->
-    s5[build] -->
-    s6[check]
+    setup_target -->
+    build_depends -->
+    prepare_source -->
+    configure -->
+    build
 ```
 
 ## Usage
@@ -45,7 +44,7 @@ TARGET=aarch64-linux-android28 ./build-package.sh <package1> <packge2> ...
 ```sh
 ## Parepare source and cd to source dir
 ## Overide this function to prepare source by your self
-prepare_source(){
+prepare_source() {
     # cd "${SRCS_DIR}"
     # git clone <URL> <pacakge_name>
     # cd <package_name>
@@ -54,7 +53,7 @@ prepare_source(){
 
 ```sh
 ## Step to configure
-configure(){
+configure() {
     ## Custom API
     # export API=28
     #
@@ -66,7 +65,7 @@ configure(){
 
 ```sh
 ## Step to build
-build(){
+build() {
     # make -j"${JOBS}" install
 
     ## Build a go package
@@ -80,7 +79,7 @@ build(){
 ## If current package is a dependency to the other package declaimed by function 'depends',
 ## during building of the other package,
 ## functions prepare_depends will be called and then call this function to check if it is built.
-check(){
+check() {
     # test -f "${OUTPUT_DIR}/lib/<lib_xxx>.a"
 }
 ```
