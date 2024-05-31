@@ -3,9 +3,10 @@ PKG_DESCRIPTION="🎑Feature-rich terminal-based text viewer. It is a so-called 
 PKG_LICENSE="MIT"
 
 PKG_VERSION="0.33.3"
-PKG_EXTNAME=.tar.gz
+PKG_SRCURL=https://github.com/noborus/ov/archive/v${PKG_VERSION}.tar.gz
+
 PKG_BASENAME=ov-${PKG_VERSION}
-PKG_SRCURL=https://github.com/noborus/ov/archive/v${PKG_VERSION}${PKG_EXTNAME}
+BUILD_PREFIX="${GO_BUILD_DIR}"
 PKG_COMMIT_ID=a6b3e1e
 
 build() {
