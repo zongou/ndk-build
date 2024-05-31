@@ -10,7 +10,7 @@ BUILD_PREFIX=${SCRIPT_DIR}/build/go
 build() {
 	setup_golang
 
-	go build -v -ldflags "-X github.com/rclone/rclone/fs.Version=v${PKG_VERSION}" -tags noselfupdate -o rclone
+	go build -v -ldflags "-X github.com/rclone/rclone/fs.Version=v${PKG_VERSION} -w -s" -tags noselfupdate -o rclone
 
 	# XXX: Fix read-only files which prevents removal of src dir.
 	chmod u+w -R .
