@@ -7,7 +7,7 @@ Features:
 - Build with NDK
 - Statically linked binaries oriented.
 
-Work flow
+Work flow:
 
 ```mermaid
 graph TD
