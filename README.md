@@ -24,79 +24,23 @@ graph TD
 ### Run in command line
 
 ```sh
-## ABI defined in build-package.sh is aarch64-linux-android
-## API defind in build-pacakge.sh is 24 (package build.sh can override this)
-./build-package.sh <package_name1> <packge_name2> ...
+## Build for host machine
+./build-packages.sh <packag1> <package2> ...
 
-## Build for x86_64
-ABI=x86_64-linux-android ./build-package.sh <package_name1> <packge_name2> ...
+## Build for android
+## Android ABIs:
+##      aarch64-linux-android
+##      armv7a-linux-androideabi
+##      x86_64-linux-android
+##      i686-linux-android
+TARGET=aarch64-linux-android28 ./build-package.sh <package1> <packge2> ...
 
-### List of Android ABIs
-## aarch64-linux-android
-## armv7a-linux-androideabi
-## x86_64-linux-android
-## i686-linux-android
+## Build for aarch64-linux-musl
+TARGET=aarch64-linux-android28 ./build-package.sh <package1> <packge2> ...
+
 ```
-
-### Run in vscode
-
-Presss <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> and then input package name in terminal panel.
-
-## Add a new package
-
-### File structrue
-
-```txt
-. <============================== WORK_DIR
-├── build
-│   └── make-4.4.1 <============= PKG_BASENAME
-│       └── ...
-├── build-all.sh
-├── build-package.sh
-├── output <===================== OUTPUT_DIR
-│   └── aarch64-linux-android <== ABI
-│       ├── bin
-│       ├── include
-│       └── share
-├── packages
-│   └── make <=================== PKG_CONFIG_DIR
-│       └── build.sh <=========== <package build config>
-├── README.md
-└── sources <==================== SRCS_DIR
-    └── make-4.4.1.tar.gz <====== PKG_BASENAME + PKG_EXTNAME
-```
-
-### Enviroment defined in build-package.sh
-
-| Env            | Defination                              |
-| -------------- | --------------------------------------- |
-| WORK_DIR       | This repo root                          |
-| SRCS_DIR       | Where we place source code package      |
-| PKG_CONFIG_DIR | Where we place build script and patches |
-| ABI            | Android ABI                             |
-| API            | Android API level                       |
-| TARGET         | Toolchain target tripple                |
-| OUTPUT_DIR     | Install prefix                          |
-| JOBS           | Parallel process used to build          |
-
-### Enviroment required in build.sh
-
-| Env          | Defination                             |
-| ------------ | -------------------------------------- |
-| PKG_BASENAME | The name where we cd in build dir      |
-| PKG_EXTNAME  | kind of source pacakge, i.e, '.tar.gz' |
-| PKG_SRCURL   | URL to get source package              |
 
 ### Functions defined in build.sh
-
-```sh
-## Defines dependencies of this package
-## function prepare_depends will be called along with this function
-depends(){
-    # echo <lib_xxx>
-    # echo <lib_yyy>
-}
-```
 
 ```sh
 ## Parepare source and cd to source dir
@@ -113,7 +57,7 @@ prepare_source(){
 configure(){
     ## Custom API
     # export API=28
-    # 
+    #
 
     ## Autoconf
     # ./configure --host="${TARGET}" --prefix="${OUTPUT_DIR}"
