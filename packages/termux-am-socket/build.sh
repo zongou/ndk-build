@@ -8,26 +8,13 @@ PKG_SRCURL=https://github.com/termux/termux-am-socket/archive/refs/tags/${PKG_VE
 # PKG_DEPENDS="libc++"
 PKG_BASENAME=termux-am-socket-${PKG_VERSION}
 
-# step_post_get_source() {
-
-# 	for file in "${PKG_SRCDIR}/"*; do
-# 		sed -i'' -E -e "s|^(AM_SOCKET_VERSION=).*|\1$PKG_FULLVERSION|" \
-# 			-e "s|\@APP_PACKAGE\@|${APP_PACKAGE}|g" \
-# 			-e "s|\@APPS_DIR\@|${APPS_DIR}|g" \
-# 			"$file"
-# 	done
-
-# }
-
-configure() {
+build() {
 	export LDFLAGS="-w -s"
 	export TERMUX_APP_PACKAGE=my.term
 	export TERMUX_APPS_DIR=/data/data/${TERMUX_APP_PACKAGE}/files/apps
 
 	rm -rf build && mkdir build && cd build
 	cmake .. -DTERMUX_APPS_DIR="${TERMUX_APPS_DIR}" -DTERMUX_APP_PACKAGE=${TERMUX_APP_PACKAGE}
-	make CFLAGS="-O3 -lto"
-	du -ahd0 termux-am-socket
-	file termux-am-socket
+	make -j"${JOBS}"
 	install -Dt "${OUTPUT_DIR}/bin" termux-am-socket
 }
