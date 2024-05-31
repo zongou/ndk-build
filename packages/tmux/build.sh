@@ -15,7 +15,8 @@ PKG_SRCURL=https://github.com/tmux/tmux/archive/refs/tags/3.4.tar.gz
 PKG_EXTRA_CONFIGURE_ARGS="--disable-static --with-TERM=screen-256color"
 PKG_CONFFILES="etc/tmux.conf etc/profile.d/tmux.sh"
 
-PKG_DEPENDS="ncurses libevent libandroid-support libandroid-glob"
+# PKG_DEPENDS="ncurses libevent libandroid-support libandroid-glob"
+PKG_DEPENDS="ncurses libevent"
 PKG_BASENAME=tmux-${PKG_VERSION}
 
 # termux_step_post_get_source() {
@@ -58,12 +59,6 @@ PKG_BASENAME=tmux-${PKG_VERSION}
 # 	mkdir -p "${PKG_MASSAGEDIR}/${PREFIX}"/var/run
 # }
 
-depends() {
-	# echo "libglob"
-	echo "libevent"
-	echo "ncurses"
-}
-
 # prepare_source() {
 # 	cd /media/user/RD20/repos/ndk-pkgs/build/tmux-3.4
 # 	git reset --hard
@@ -71,10 +66,7 @@ depends() {
 # }
 
 configure() {
-	# langinfo requires API >= 26
-	API=28
-	
-
+	# langinfo requires API >= 26	
 	patch -up1 <"${PKG_CONFIG_DIR}/configure.ac.patch"
 	./autogen.sh
 	# exit

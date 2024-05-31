@@ -5,7 +5,7 @@ PKG_VERSION="1.7.7"
 PKG_SRCURL=https://github.com/showwin/speedtest-go/archive/refs/tags/v${PKG_VERSION}.tar.gz
 
 PKG_BASENAME=speedtest-go-${PKG_VERSION}
-BUILD_PREFIX=${SCRIPT_DIR}/build/go
+BUILD_PREFIX="${GO_BUILD_DIR}"
 
 build() {
 	setup_golang

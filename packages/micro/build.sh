@@ -5,7 +5,7 @@ PKG_VERSION="2.0.13"
 PKG_SRCURL=https://github.com/zyedidia/micro/archive/refs/tags/v${PKG_VERSION}.tar.gz
 
 PKG_BASENAME=micro-${PKG_VERSION}
-BUILD_PREFIX=${SCRIPT_DIR}/build/go
+BUILD_PREFIX="${GO_BUILD_DIR}"
 
 build() {
 	setup_golang

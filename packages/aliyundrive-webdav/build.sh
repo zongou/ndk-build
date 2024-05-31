@@ -6,7 +6,7 @@ PKG_VERSION="2.3.3"
 PKG_SRCURL=https://github.com/messense/aliyundrive-webdav/archive/refs/tags/v${PKG_VERSION}.tar.gz
 
 PKG_BASENAME=aliyundrive-webdav-${PKG_VERSION}
-BUILD_PREFIX="${SCRIPT_DIR}/build/rust"
+BUILD_PREFIX="${RUST_BUILD_DIR}"
 
 build() {
 	setup_rust

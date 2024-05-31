@@ -4,6 +4,8 @@ set -eu
 msg() { printf '%s\n' "$*" >&2; }
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+GO_BUILD_DIR="${SCRIPT_DIR}/build/go"
+RUST_BUILD_DIR="${SCRIPT_DIR}/build/rust"
 
 setup_target() {
   TARGET=${TARGET-}

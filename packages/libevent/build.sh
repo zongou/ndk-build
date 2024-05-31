@@ -1,11 +1,8 @@
 PKG_VERSION="2.1.12"
-PKG_BASENAME=libevent-2.1.12-stable
-PKG_EXTNAME=.tar.gz
-PKG_SRCURL=https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/${PKG_BASENAME}${PKG_EXTNAME}
+PKG_SRCURL=https://github.com/libevent/libevent/releases/download/release-2.1.12-stable/${PKG_BASENAME}.tar.gz
 
-depends() {
-	echo openssl
-}
+PKG_BASENAME=libevent-2.1.12-stable
+PKG_DEPENDS="openssl"
 
 configure() {
 	./autogen.sh

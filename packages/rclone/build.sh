@@ -5,7 +5,7 @@ PKG_VERSION="1.66.0"
 PKG_SRCURL=https://github.com/rclone/rclone/releases/download/v${PKG_VERSION}/rclone-v${PKG_VERSION}.tar.gz
 
 PKG_BASENAME=rclone-v${PKG_VERSION}
-BUILD_PREFIX=${SCRIPT_DIR}/build/go
+BUILD_PREFIX="${GO_BUILD_DIR}"
 
 build() {
 	setup_golang
