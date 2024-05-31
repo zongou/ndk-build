@@ -6,13 +6,11 @@ PKG_RECOMMENDS="diffutils"
 # Update all of vim, vim-python and vim-gtk to the same version in one PR.
 
 # PKG_VERSION=9.1.0200
-PKG_VERSION=9.1.0425
+PKG_VERSION=9.1.0454
 PKG_BASENAME=vim-${PKG_VERSION}
-PKG_EXTNAME=.tar.gz
 # https://github.com/vim/vim/releases/tag/v9.1.0411
 PKG_SRCURL="https://github.com/vim/vim/archive/v${PKG_VERSION}.tar.gz"
-PKG_SHA256=cc991d7f6d147a8552ce80ca45e8a2335228096fe1578461149e67dbc97ed35e
-PKG_AUTO_UPDATE=false
+
 PKG_EXTRA_CONFIGURE_ARGS="
 vim_cv_getcwd_broken=no
 vim_cv_memmove_handles_overlap=yes
@@ -131,5 +129,4 @@ configure() {
 		vim_cv_tty_group=world
 
 	make -j"${JOBS}" install
-	file src/vim
 }
