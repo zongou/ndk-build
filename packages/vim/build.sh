@@ -5,10 +5,8 @@ PKG_RECOMMENDS="diffutils"
 # vim should only be updated every 50 releases on multiples of 50.
 # Update all of vim, vim-python and vim-gtk to the same version in one PR.
 
-# PKG_VERSION=9.1.0200
 PKG_VERSION=9.1.0454
 PKG_BASENAME=vim-${PKG_VERSION}
-# https://github.com/vim/vim/releases/tag/v9.1.0411
 PKG_SRCURL="https://github.com/vim/vim/archive/v${PKG_VERSION}.tar.gz"
 
 PKG_EXTRA_CONFIGURE_ARGS="
