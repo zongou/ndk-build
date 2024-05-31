@@ -19,52 +19,6 @@ PKG_CONFFILES="etc/tmux.conf etc/profile.d/tmux.sh"
 PKG_DEPENDS="ncurses libevent"
 PKG_BASENAME=tmux-${PKG_VERSION}
 
-# termux_step_post_get_source() {
-# 	git fetch --unshallow
-# 	git checkout $_COMMIT
-
-# 	local pdate="p$(git log -1 --format=%cs | sed 's/-//g')"
-# 	if [[ "$PKG_VERSION" != *"${pdate}" ]]; then
-# 		echo -n "ERROR: The version string \"$PKG_VERSION\" is"
-# 		echo -n " different from what is expected to be; should end"
-# 		echo " with \"${pdate}\"."
-# 		return 1
-# 	fi
-
-# 	local s=$(find . -type f ! -path '*/.git/*' -print0 | xargs -0 sha256sum | LC_ALL=C sort | sha256sum)
-# 	if [[ "${s}" != "${PKG_SHA256}  "* ]]; then
-# 		termux_error_exit "Checksum mismatch for source files."
-# 	fi
-# }
-
-# termux_step_pre_configure() {
-# 	LDFLAGS+=" -landroid-glob"
-# 	./autogen.sh
-# }
-
-# termux_step_post_make_install() {
-# 	cp "$PKG_BUILDER_DIR"/tmux.conf "$PREFIX"/etc/tmux.conf
-
-# 	mkdir -p "$PREFIX"/etc/profile.d
-# 	echo "export TMUX_TMPDIR=$PREFIX/var/run" >"$PREFIX"/etc/profile.d/tmux.sh
-
-# 	mkdir -p "$PREFIX"/share/bash-completion/completions
-# 	termux_download \
-# 		https://raw.githubusercontent.com/imomaliev/tmux-bash-completion/homebrew_1.0.0/completions/tmux \
-# 		"$PREFIX"/share/bash-completion/completions/tmux \
-# 		05e79fc1ecb27637dc9d6a52c315b8f207cf010cdcee9928805525076c9020ae
-# }
-
-# termux_step_post_massage() {
-# 	mkdir -p "${PKG_MASSAGEDIR}/${PREFIX}"/var/run
-# }
-
-# prepare_source() {
-# 	cd /media/user/RD20/repos/ndk-pkgs/build/tmux-3.4
-# 	git reset --hard
-# 	git clean -xdf
-# }
-
 configure() {
 	# langinfo requires API >= 26	
 	patch -up1 <"${PKG_CONFIG_DIR}/configure.ac.patch"
@@ -80,18 +34,11 @@ configure() {
 	# sed -i 's^#define TMUX_SOCK "$TMUX_TMPDIR:" _PATH_TMP^#define TMUX_SOCK "$TMUX_TMPDIR:" _PATH_TMP^' tmux.h
 
 	## Add to toolchain search dirs
-	export CFLAGS="-I${OUTPUT_DIR}/include"
-	export LDFLAGS="-L${OUTPUT_DIR}/lib"
-
-	## Make small size stripped
-	export CFLAGS="${CFLAGS} -Os -ffunction-sections -fdata-sections -fno-unwind-tables -fno-asynchronous-unwind-tables"
-	export LDFLAGS="${LDFLAGS} -ffunction-sections -fdata-sections -Wl,--gc-sections -s"
-
-	## Make static linked
-	export LDFLAGS="${LDFLAGS} -static"
+	export CFLAGS="-I${OUTPUT_DIR}/include -I${OUTPUT_DIR}/include/ncursesw"
+	export LDFLAGS="-L${OUTPUT_DIR}/lib -ldl"
 
 	# ./configure --host="${TARGET}" --prefix="${OUTPUT_DIR}" --enable-static --with-TERM=screen-256color --enable-sixel
-	./configure --host="${TARGET}" --prefix="${OUTPUT_DIR}" --enable-static --enable-sixel
+	./configure --host="${TARGET}" --prefix="${OUTPUT_DIR}" --enable-sixel
 }
 
 build() {
