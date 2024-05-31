@@ -8,7 +8,7 @@ GO_BUILD_DIR="${SCRIPT_DIR}/build/go"
 RUST_BUILD_DIR="${SCRIPT_DIR}/build/rust"
 
 setup_target() {
-  TARGET=${TARGET-}
+	TARGET=${TARGET-}
 
 	# shellcheck disable=SC2155
 	export JOBS="$(nproc --all)"
@@ -22,11 +22,11 @@ setup_target() {
 		# API="$(echo "${TARGET}" | sed -E 's/.+-linux-android(eabi)?//')"
 		TOOLCHAIN="${TOOLCHAIN-${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64}"
 
-    BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${ABI}}"
+		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${ABI}}"
 		OUTPUT_DIR="${SCRIPT_DIR}/output/${ABI}"
 
-    export CC="${TOOLCHAIN}/bin/${TARGET}-clang"
-    export CXX="${TOOLCHAIN}/bin/${TARGET}-clang++"
+		export CC="${TOOLCHAIN}/bin/${TARGET}-clang"
+		export CXX="${TOOLCHAIN}/bin/${TARGET}-clang++"
 
 		for tool in ar objcopy ld.lld strip objdump ranlib; do
 			ENV_KEY=$(echo "${tool}" | cut -d. -f1 | tr "[:lower:]" "[:upper:]")
@@ -38,17 +38,17 @@ setup_target() {
 			done
 		done
 		;;
-  *-linux-musl)
-    BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${TARGET}}"
+	*-linux-musl)
+		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${TARGET}}"
 		OUTPUT_DIR="${SCRIPT_DIR}/output/${TARGET}"
 
-    export CC="${SCRIPT_DIR}/wrappers/zig/cc"
-    export CXX="${SCRIPT_DIR}/wrappers/zig/c++"
-    export LD="${SCRIPT_DIR}/wrappers/zig/ld.lld"
-    ;;
-  *)
-    BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/host}"
-    OUTPUT_DIR="${SCRIPT_DIR}/output/host"
+		export CC="${SCRIPT_DIR}/wrappers/zig/cc"
+		export CXX="${SCRIPT_DIR}/wrappers/zig/c++"
+		export LD="${SCRIPT_DIR}/wrappers/zig/ld.lld"
+		;;
+	*)
+		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/host}"
+		OUTPUT_DIR="${SCRIPT_DIR}/output/host"
 		;;
 	esac
 
@@ -106,9 +106,9 @@ prepare_source() {
 
 	if ! test -f "${PKG_TARBALL}"; then
 		msg "Downloading ${package}..."
-		if command -v curl; then
+		if command -v curl >/dev/null; then
 			DOWNLOAD_CMD="curl -Lk"
-		elif command -v wget; then
+		elif command -v wget >/dev/null; then
 			DOWNLOAD_CMD="wget -O-"
 		else
 			msg "cannot find 'curl' or 'wget'"
