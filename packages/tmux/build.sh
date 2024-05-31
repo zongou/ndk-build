@@ -7,20 +7,16 @@ _COMMIT=fbe6fe7f55cfc2a32f9cee4cb50502a53d3ce8bb
 _COMMIT_DATE=20230428
 
 PKG_VERSION=3.4
-PKG_BASENAME=tmux-${PKG_VERSION}
-PKG_EXTNAME=.tar.gz
-# PKG_SRCURL=https://github.com/tmux/tmux/releases/download/${PKG_VERSION}/${PKG_BASENAME}${PKG_EXTNAME}
+# PKG_SRCURL=https://github.com/tmux/tmux/releases/download/${PKG_VERSION}/${PKG_BASENAME}.tar.gz
 PKG_SRCURL=https://github.com/tmux/tmux/archive/refs/tags/3.4.tar.gz
 
-PKG_SHA256=b61189533139bb84bdc0e96546a5420c183d7ba946a559e891d313c1c32d953d
-PKG_GIT_BRANCH=master
-PKG_AUTO_UPDATE=false
 # Link against libandroid-support for wcwidth(), see https://github.com/termux/termux-packages/issues/224
-PKG_DEPENDS="ncurses, libevent, libandroid-support, libandroid-glob"
 # Set default TERM to screen-256color, see: https://raw.githubusercontent.com/tmux/tmux/3.3/CHANGES
 PKG_EXTRA_CONFIGURE_ARGS="--disable-static --with-TERM=screen-256color"
-
 PKG_CONFFILES="etc/tmux.conf etc/profile.d/tmux.sh"
+
+PKG_DEPENDS="ncurses libevent libandroid-support libandroid-glob"
+PKG_BASENAME=tmux-${PKG_VERSION}
 
 # termux_step_post_get_source() {
 # 	git fetch --unshallow
