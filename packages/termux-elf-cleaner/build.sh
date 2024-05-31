@@ -3,11 +3,10 @@ PKG_DESCRIPTION="Cleaner of ELF files for Android"
 PKG_LICENSE="GPL-3.0"
 
 PKG_VERSION=2.2.1
+PKG_SRCURL=https://github.com/termux/termux-elf-cleaner/archive/v${PKG_VERSION}.tar.gz
+
+# PKG_DEPENDS="libc++"
 PKG_BASENAME=termux-elf-cleaner-${PKG_VERSION}
-PKG_EXTNAME=.tar.gz
-PKG_SRCURL=https://kkgithub.com/termux/termux-elf-cleaner/archive/v${PKG_VERSION}${PKG_EXTNAME}
-PKG_SHA256=105be3c8673fd377ea7fd6becb6782b2ba060ad764439883710a5a7789421c46
-PKG_DEPENDS="libc++"
 
 configure() {
 	autoreconf -vfi

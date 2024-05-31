@@ -3,11 +3,10 @@ PKG_DESCRIPTION="A faster version of am with less features that only works while
 PKG_LICENSE="GPL-3.0"
 
 PKG_VERSION=1.5.0
+PKG_SRCURL=https://github.com/termux/termux-am-socket/archive/refs/tags/${PKG_VERSION}.tar.gz
+
+# PKG_DEPENDS="libc++"
 PKG_BASENAME=termux-am-socket-${PKG_VERSION}
-PKG_EXTNAME=.tar.gz
-PKG_SRCURL=https://ghproxy.net/https://github.com/termux/termux-am-socket/archive/refs/tags/${PKG_VERSION}.tar.gz
-PKG_SHA256=5175023c7fd675492451a72d06b75c772f257685b69fe117227bae5a5e6f5494
-PKG_DEPENDS="libc++"
 
 # step_post_get_source() {
 
