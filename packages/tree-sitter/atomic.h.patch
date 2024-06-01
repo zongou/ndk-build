@@ -1,0 +1,20 @@
+diff --git a/lib/src/atomic.h b/lib/src/atomic.h
+index e680b60..7ce7cef 100644
+--- a/lib/src/atomic.h
++++ b/lib/src/atomic.h
+@@ -12,8 +12,13 @@ static inline size_t atomic_load(const volatile size_t *p) {
+ }
+ 
+ static inline uint32_t atomic_inc(volatile uint32_t *p) {
+-  *p += 1;
+-  return *p;
++#ifdef __GLIBC__
++  return __sync_add_and_fetch(p, 1u);
++#else
++   uint32_t res = __atomic_add_fetch(p, 1u, __ATOMIC_RELEASE);
++   __sync_synchronize();
++   return res;
++#endif
+ }
+ 
+ static inline uint32_t atomic_dec(volatile uint32_t *p) {

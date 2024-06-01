@@ -10,7 +10,8 @@ BUILD_PREFIX="${RUST_BUILD_DIR}"
 
 build() {
 	setup_rust
-	export RUSTFLAGS="-C link-arg=-s -C opt-level=s -C lto=true"
+	# export RUSTFLAGS="-C link-arg=-s -C opt-level=s -C lto=true"
+	patch -up1 <"${PKG_CONFIG_DIR}/atomic.h.patch"
 	cargo build --release
 	PKG_NAME=tree-sitter
 	install "target/${CARGO_BUILD_TARGET}/release/${PKG_NAME}" -D "${OUTPUT_DIR}/bin/${PKG_NAME}"
