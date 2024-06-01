@@ -1,20 +1,18 @@
 #!/bin/sh
-set -eu
+set -eux
 
 msg() { printf '%s\n' "$*" >&2; }
 
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 GO_BUILD_DIR="${SCRIPT_DIR}/build/go"
 RUST_BUILD_DIR="${SCRIPT_DIR}/build/rust"
+SRCS_DIR="${SCRIPT_DIR}/sources"
+mkdir -p "${SRCS_DIR}"
+# shellcheck disable=SC2155
+export JOBS="$(nproc --all)"
 
 setup_target() {
 	if test "${TARGET+1}"; then
-		# shellcheck disable=SC2155
-		export JOBS="$(nproc --all)"
-
-		SRCS_DIR="${SCRIPT_DIR}/sources"
-		mkdir -p "${SRCS_DIR}"
-
 		case "${TARGET}" in
 		*-linux-android*)
 			ABI="$(echo "${TARGET}" | grep -E -o -e '.+-.+-android(eabi)?')"
@@ -53,6 +51,10 @@ setup_target() {
 	else
 		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/host}"
 		OUTPUT_DIR="${SCRIPT_DIR}/output/host"
+
+		CC=${CC-cc}
+		CXX=${CXX-c++}
+		LD=${LD-ld}
 	fi
 
 	mkdir -p "${BUILD_PREFIX}"
