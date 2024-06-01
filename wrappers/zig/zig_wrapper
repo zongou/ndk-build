@@ -16,7 +16,7 @@ ar | dlltool | lib | ranlib | objcopy | ld.lld)
 ## None of these affect the actual compilation target.
 ## https://github.com/ziglang/zig/issues/9948
 cc | c++)
-	set -- "${EXE}" ${TARGET+--target=aarch64-linux-musl} "$@"
+	set -- "${EXE}" ${TARGET+--target=${TARGET}} "$@"
 	for argv in "$@"; do
 		case "${argv}" in
 		-Wp,-MD,*) set -- "$@" "-MD" "-MF" "$(echo "$argv" | sed 's/^-Wp,-MD,//')" ;;
