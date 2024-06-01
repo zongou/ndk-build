@@ -152,7 +152,7 @@ build_package() {
 		package="$1"
 		PKG_CONFIG_DIR="${SCRIPT_DIR}/packages/${package}"
 		export PKG_CONFIG_DIR
-		unset PKG_DEPENDS
+		unset BUILD_PREFIX PKG_DEPENDS
 		msg "Building package '${package}'"
 		# shellcheck disable=SC1090
 		. "${SCRIPT_DIR}/packages/${package}/build.sh"
