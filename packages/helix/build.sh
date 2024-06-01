@@ -44,7 +44,9 @@ build() {
 	# export HELIX_DISABLE_AUTO_GRAMMAR_BUILD=1
 	# CC_HOST=${}
 	# PATH="${SCRIPT_DIR}/wrappers/zig:${PATH}"
-	cargo build --release
+
+	export RUSTFLAGS="-C target-feature=-crt-static"
+	cargo build --target="${CARGO_BUILD_TARGET}" --release
 
 	DATA_DIR=${OUTPUT_DIR}/lib/helix
 	mkdir -p "${DATA_DIR}"
