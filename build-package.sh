@@ -8,54 +8,55 @@ GO_BUILD_DIR="${SCRIPT_DIR}/build/go"
 RUST_BUILD_DIR="${SCRIPT_DIR}/build/rust"
 
 setup_target() {
-	TARGET=${TARGET-}
+	if test "${TARGET+1}"; then
+		# shellcheck disable=SC2155
+		export JOBS="$(nproc --all)"
 
-	# shellcheck disable=SC2155
-	export JOBS="$(nproc --all)"
+		SRCS_DIR="${SCRIPT_DIR}/sources"
+		mkdir -p "${SRCS_DIR}"
 
-	SRCS_DIR="${SCRIPT_DIR}/sources"
-	mkdir -p "${SRCS_DIR}"
+		case "${TARGET}" in
+		*-linux-android*)
+			ABI="$(echo "${TARGET}" | grep -E -o -e '.+-.+-android(eabi)?')"
+			# API="$(echo "${TARGET}" | sed -E 's/.+-linux-android(eabi)?//')"
+			TOOLCHAIN="${TOOLCHAIN-${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64}"
 
-	case "${TARGET}" in
-	*-linux-android*)
-		ABI="$(echo "${TARGET}" | grep -E -o -e '.+-.+-android(eabi)?')"
-		# API="$(echo "${TARGET}" | sed -E 's/.+-linux-android(eabi)?//')"
-		TOOLCHAIN="${TOOLCHAIN-${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64}"
+			BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${ABI}}"
+			OUTPUT_DIR="${SCRIPT_DIR}/output/${ABI}"
 
-		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${ABI}}"
-		OUTPUT_DIR="${SCRIPT_DIR}/output/${ABI}"
+			export CC="${CC-${TOOLCHAIN}/bin/${TARGET}-clang}"
+			export CXX="${CXX-${TOOLCHAIN}/bin/${TARGET}-clang++}"
 
-		export CC="${TOOLCHAIN}/bin/${TARGET}-clang"
-		export CXX="${TOOLCHAIN}/bin/${TARGET}-clang++"
-
-		for tool in ar objcopy ld.lld strip objdump ranlib; do
-			ENV_KEY=$(echo "${tool}" | cut -d. -f1 | tr "[:lower:]" "[:upper:]")
-			for ENV_VAL in "${TOOLCHAIN}/bin/${TARGET}-${tool}" "${TOOLCHAIN}/bin/llvm-${tool}" "${TOOLCHAIN}/bin/${tool}"; do
-				if test -x "${ENV_VAL}"; then
-					export "${ENV_KEY}=${ENV_VAL}"
-					break
-				fi
+			for tool in ar objcopy ld.lld strip objdump ranlib; do
+				ENV_KEY=$(echo "${tool}" | cut -d. -f1 | tr "[:lower:]" "[:upper:]")
+				for ENV_VAL in "${TOOLCHAIN}/bin/${TARGET}-${tool}" "${TOOLCHAIN}/bin/llvm-${tool}" "${TOOLCHAIN}/bin/${tool}"; do
+					if test -x "${ENV_VAL}"; then
+						export "${ENV_KEY}=${ENV_VAL}"
+						break
+					fi
+				done
 			done
-		done
-		;;
-	*-linux-musl)
-		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${TARGET}}"
-		OUTPUT_DIR="${SCRIPT_DIR}/output/${TARGET}"
+			;;
+		*-linux-musl)
+			BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${TARGET}}"
+			OUTPUT_DIR="${SCRIPT_DIR}/output/${TARGET}"
 
-		export CC="${SCRIPT_DIR}/wrappers/zig/cc"
-		export CXX="${SCRIPT_DIR}/wrappers/zig/c++"
-		export LD="${SCRIPT_DIR}/wrappers/zig/ld.lld"
-		;;
-	*)
+			export CC="${CC-${SCRIPT_DIR}/wrappers/zig/bin/cc}"
+			export CXX="${CXX-${SCRIPT_DIR}/wrappers/zig/bin/c++}"
+			export LD="${LD-${SCRIPT_DIR}/wrappers/zig/ld.lld}"
+			;;
+		*)
+			msg "Target '${TARGET}' not supported!"
+			exit 1
+			;;
+		esac
+	else
 		BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/host}"
 		OUTPUT_DIR="${SCRIPT_DIR}/output/host"
-		;;
-	esac
+	fi
 
 	mkdir -p "${BUILD_PREFIX}"
-	mkdir -p "${OUTPUT_DIR}"
-	mkdir -p "${OUTPUT_DIR}/bin"
-	mkdir -p "${OUTPUT_DIR}/lib"
+	mkdir -p "${OUTPUT_DIR}" "${OUTPUT_DIR}/bin" "${OUTPUT_DIR}/lib"
 
 	## pkg-conf
 	export PKG_CONFIG_PATH="${OUTPUT_DIR}/lib/pkgconfig"
@@ -67,16 +68,16 @@ setup_target() {
 setup_golang() {
 	## Detect GOOS
 	case "${TARGET}" in
-	*-linux-android*)
-		export CGO_ENABLED=1 GOOS=android
-		;;
+	*-linux-android*) export CGO_ENABLED=1 GOOS=android ;;
+	*-linux-musl*) export CGO_ENABLED=1 GOOS=linux ;;
 	esac
 
 	## Detect GOARCH
 	case "${TARGET}" in
-	aarch64-*)
-		export GOARCH=arm64
-		;;
+	aarch64-*) export GOARCH=arm64 ;;
+	arm-*) export GOARCH=arm ;;
+	x86_64-*) export GOARCH=amd64 ;;
+	i686-*) export GOARCH=386 ;;
 	esac
 }
 
