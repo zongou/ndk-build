@@ -114,7 +114,7 @@ prepare_source() {
 		elif command -v wget >/dev/null; then
 			DOWNLOAD_CMD="wget -O-"
 		else
-			msg "cannot find 'curl' or 'wget'"
+			msg "Cannot find neither 'curl' nor 'wget'"
 			exit 1
 		fi
 		${DOWNLOAD_CMD} "${PKG_SRCURL}" >"${PKG_TARBALL}.tmp"
@@ -132,7 +132,7 @@ prepare_source() {
 
 build_depends() {
 	if test "${PKG_DEPENDS+1}"; then
-		msg "package '${package}' depends on '${PKG_DEPENDS}'"
+		msg "Package '${package}' depends on '${PKG_DEPENDS}'"
 		for package in ${PKG_DEPENDS}; do
 			(
 				unset -f check
