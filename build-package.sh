@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eux
+set -eu
 
 msg() { printf '%s\n' "$*" >&2; }
 
@@ -132,6 +132,7 @@ prepare_source() {
 
 build_depends() {
 	if test "${PKG_DEPENDS+1}"; then
+		msg "package '${package}' depends on '${PKG_DEPENDS}'"
 		for package in ${PKG_DEPENDS}; do
 			(
 				unset -f check
