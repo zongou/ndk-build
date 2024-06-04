@@ -68,19 +68,21 @@ setup_target() {
 }
 
 setup_golang() {
-	## Detect GOOS
-	case "${TARGET}" in
-	*-linux-android*) export CGO_ENABLED=1 GOOS=android ;;
-	*-linux-musl*) export CGO_ENABLED=1 GOOS=linux ;;
-	esac
+	if test "${TARGET+1}"; then
+		## Detect GOOS
+		case "${TARGET}" in
+		*-linux-android*) export CGO_ENABLED=1 GOOS=android ;;
+		*-linux-musl*) export CGO_ENABLED=1 GOOS=linux ;;
+		esac
 
-	## Detect GOARCH
-	case "${TARGET}" in
-	aarch64-*) export GOARCH=arm64 ;;
-	arm-*) export GOARCH=arm ;;
-	x86_64-*) export GOARCH=amd64 ;;
-	i686-*) export GOARCH=386 ;;
-	esac
+		## Detect GOARCH
+		case "${TARGET}" in
+		aarch64-*) export GOARCH=arm64 ;;
+		arm-*) export GOARCH=arm ;;
+		x86_64-*) export GOARCH=amd64 ;;
+		i686-*) export GOARCH=386 ;;
+		esac
+	fi
 }
 
 setup_rust() {
