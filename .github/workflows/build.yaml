@@ -22,17 +22,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@main
+
       - name: Build ${{inputs.package}}
-      env: 
-      TAREGT: ${{inputs.target}}
-      run: | 
-        ./build-package.sh ${{inputs.package}}
-      - name: Upload release
-        uses: ncipollo/release-action@v1.14.0
-        with:
-          tag: "prebuilt"
-          artifacts: nodejs-v${{ github.event.inputs.node_version }}-android-${{ github.event.inputs.target }}.tar.xz
-          allowUpdates: true
-          replacesArtifacts: true
-          body: |
-            [action](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
+        env:
+          TARGET: ${{inputs.target}}
+        run: |
+          ./build-package.sh ${{inputs.package}}
