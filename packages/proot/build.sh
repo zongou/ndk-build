@@ -7,14 +7,11 @@ PKG_LICENSE="GPL-2.0"
 # Just bump commit and version when needed:
 
 PKG_VERSION=5.1.107
-PKG_BASENAME=proot-master
-PKG_EXTNAME=.tar.gz
-PKG_SRCURL=https://github.com/termux/proot/archive/master${PKG_EXTNAME}
+PKG_SRCURL=https://github.com/termux/proot/archive/master.tar.gz
 # PKG_EXTRA_MAKE_ARGS="-C src"
 
-depends() {
-	echo libtalloc
-}
+PKG_BASENAME=proot-master
+PKG_DEPENDS="libtalloc"
 
 configure() {
 	patch -up1 <"${PKG_CONFIG_DIR}/base.patch"
