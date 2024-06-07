@@ -17,8 +17,8 @@ depends() {
 }
 
 configure() {
-	patch -up1 <"${WORK_DIR}/pending_packages/proot/base.patch"
-	# patch -up1 <"${WORK_DIR}/packages/proot/proot-try-TMPDIR.patch"
+	patch -up1 <"${PKG_CONFIG_DIR}/base.patch"
+	# patch -up1 <"${PKG_CONFIG_DIR}/proot-try-TMPDIR.patch"
 }
 
 build() {

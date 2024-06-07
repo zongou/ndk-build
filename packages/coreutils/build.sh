@@ -11,7 +11,7 @@ PKG_SRCURL=https://ftp.gnu.org/gnu/coreutils/${PKG_BASENAME}${PKG_EXTNAME}
 
 configure() {
 	# export CHOST="${TARGET}"
-	patch -up1 <"${WORK_DIR}/packages/coreutils/src-hostid.c.patch"
+	patch -up1 <"${PKG_CONFIG_DIR}/src-hostid.c.patch"
 
 	export FORCE_UNSAFE_CONFIGURE=1
 
