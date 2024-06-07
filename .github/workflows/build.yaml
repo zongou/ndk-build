@@ -1,5 +1,5 @@
-name: Build nodejs android
-run-name: Build nodejs-v${{ github.event.inputs.node_version }}-android-${{ github.event.inputs.target }}, mirror:${{ github.event.inputs.node_mirror }}
+name: Build Package
+run-name: Build ${{ inputs.package }}
 on:
   workflow_dispatch:
     inputs:
@@ -23,7 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Build ${{inputs.package}}
-      env: TAREGT=${{inputs.target}}
+      env: 
+      TAREGT: ${{inputs.target}}
       run: | 
         ./build-package.sh ${{inputs.package}} ${{inputs.target}}
       - name: Upload release
