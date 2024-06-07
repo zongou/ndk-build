@@ -35,8 +35,4 @@ build() {
 
 	make -C src distclean || true
 	make -C src V=1 "PREFIX=${OUTPUT_DIR}" ${STRIP+STRIP="${STRIP}"} -j"${JOBS}" install
-
-	file src/proot
-	du -ahd0 src/proot
-	ldd src/proot
 }
