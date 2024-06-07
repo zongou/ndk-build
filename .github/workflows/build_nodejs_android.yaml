@@ -1,0 +1,37 @@
+name: Build nodejs android
+run-name: Build nodejs-v${{ github.event.inputs.node_version }}-android-${{ github.event.inputs.target }}, mirror:${{ github.event.inputs.node_mirror }}
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "packge:"
+        default: "proot"
+        required: true
+      target:
+        description: "target:"
+        default: aarch64-linux-android24
+        required: true
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - name: Build ${{inputs.package}}
+      env: TAREGT=${{inputs.target}}
+      run: | 
+        ./build-package.sh ${{inputs.package}} ${{inputs.target}}
+      - name: Upload release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          tag: "prebuilt"
+          artifacts: nodejs-v${{ github.event.inputs.node_version }}-android-${{ github.event.inputs.target }}.tar.xz
+          allowUpdates: true
+          replacesArtifacts: true
+          body: |
+            [action](${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}})
