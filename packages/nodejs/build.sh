@@ -4,9 +4,9 @@ PKG_HOMEPAGE=https://nodejs.org/
 PKG_DESCRIPTION="Open Source, cross-platform JavaScript runtime environment"
 PKG_LICENSE="MIT"
 PKG_MAINTAINER="Yaksh Bariya <thunder-coding@termux.dev>"
-PKG_VERSION=22.2.0
+# PKG_VERSION=22.2.0
 # PKG_VERSION=21.6.2
-# PKG_VERSION=20.11.0
+PKG_VERSION=20.11.0
 PKG_REVISION=2
 PKG_SRCURL=https://nodejs.org/dist/v${PKG_VERSION}/node-v${PKG_VERSION}.tar.xz
 # PKG_SRCURL=https://github.com/nodejs/node/archive/refs/tags/v${PKG_VERSION}.tar.gz
@@ -98,6 +98,7 @@ configure() {
 		--dest-os=android \
 		--cross-compiling \
 		--openssl-no-asm \
+		--partly-static \
 		--ninja
 }
 
