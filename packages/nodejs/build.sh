@@ -92,9 +92,9 @@ configure() {
     target_arch=${DEST_CPU} \
     v8_target_arch=${DEST_CPU} \
     android_target_arch=${DEST_CPU} \
-    host_os=${HOST_OS} \
+    host_os=linux \
     OS=android \
-    android_ndk_path=${ANDROID_NDK_PATH}"
+    android_ndk_path=${ANDROID_NDK_HOME}"
 	export CC_host=gcc
 	export CXX_host=g++
 	export LINK_host=g++
