@@ -84,8 +84,17 @@ configure() {
 		;;
 	esac
 
-	export GYP_DEFINES="host_os=linux \
-		android_ndk_path=${ANDROID_NDK_HOME}"
+	# export GYP_DEFINES="\
+	# 	host_os=linux \
+	# 	android_ndk_path=${ANDROID_NDK_HOME}"
+
+	export GYP_DEFINES="\
+    target_arch=${DEST_CPU} \
+    v8_target_arch=${DEST_CPU} \
+    android_target_arch=${DEST_CPU} \
+    host_os=${HOST_OS} \
+    OS=android \
+    android_ndk_path=${ANDROID_NDK_PATH}"
 	export CC_host=gcc
 	export CXX_host=g++
 	export LINK_host=g++
