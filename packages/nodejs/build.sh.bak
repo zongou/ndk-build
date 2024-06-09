@@ -6,7 +6,7 @@
 # ld: error: undefined symbol: android_getCpuFeatures
 # >>> referenced by cpu_features.c# Use API28 or disable the test in ../../test/cctest/test_crypto_clienthello.cc
 # ../../test/cctest/test_crypto_clienthello.cc:57:40: error: use of undeclared identifier 'aligned_alloc'
-# alloc_base = static_cast<uint8_t*>(aligned_alloc(page, 2 * page));
+    # alloc_base = static_cast<uint8_t*>(aligned_alloc(page, 2 * page));
 # https://github.com/android/ndk/issues/1339#issuecomment-676811636
 
 # >>>               zlib.cpu_features.o:(_cpu_check_features) in archive obj/deps/zlib/libzlib.a
@@ -51,23 +51,40 @@ patch_source() {
 	# g++: error: unrecognized command line option ‘-msign-return-address=all’
 	sed -i "s|o\['cflags'\]+=\['-msign-return-address=all'\]|warn('-msign-return-address=all no longer exists!')|" configure.py
 
+	# ld.lld: error: undefined symbol: android_getCpuFeatures
+	# >>> referenced by cpu_features.c
+	# >>>               zlib.cpu_features.o:(_cpu_check_features) in archive obj/deps/zlib/libzlib.a
+	# https://github.com/nodejs/node/commit/16ac5e1ca837f5f3f1bd2a365d0aed3d71b2803c
+	export CFLAGS=" -I${ANDROID_NDK_HOME}/sources/android/cpufeatures"
+
+	### ======================================
+	# if test -f ${GITHUB_WORKSPACE}/packages/nodejs/${{ github.event.inputs.node_version }}.patch; then
+	# 	patch --strip=1 < ${GITHUB_WORKSPACE}/packages/nodejs/${{ github.event.inputs.node_version }}.patch --no-backup-if-mismatch -t
+	# fi
+
+	# # Try to patch trap-handler.h
+	# if test $(echo ${{ github.event.inputs.node_version }} | grep -Eo -e "^[0-9]+") -gt 20; then
+	# 	cp ${GITHUB_WORKSPACE}/packages/nodejs/21.x.fixed-trap-handler.patch ./android-patches/trap-handler.h.patch
+	# fi
+	# patch -f ./deps/v8/src/trap-handler/trap-handler.h < ./android-patches/trap-handler.h.patch --no-backup-if-mismatch -t || true
+
 	# g++: error: unrecognized command-line option ‘-mbranch-protection=standard’
-	sed -i "s^-mbranch-protection=standard^^" node.gyp
+	# sed -i "s^-mbranch-protection=standard^^" node.gyp
 
 	# ../deps/zlib/cpu_features.c:43:10: fatal error: 'cpu-features.h' file not found
-	if test -f ./deps/zlib/cpu_features.c; then
-		sed -i 's:#include <cpu-features.h>:#include "cpu-features.c":' ./deps/zlib/cpu_features.c
-	fi
+	# if test -f ./deps/zlib/cpu_features.c; then
+	# 	sed -i 's:#include <cpu-features.h>:#include "cpu-features.c":' ./deps/zlib/cpu_features.c
+	# fi
 
 	# ../deps/v8/src/base/debug/stack_trace_posix.cc:156:9: error: use of undeclared identifier 'backtrace_symbols'
-	echo >test/cctest/test_crypto_clienthello.cc
+	# echo >test/cctest/test_crypto_clienthello.cc
 
 	# ninja: error: '../../deps/uv/src/unix/pthread-fixes.c', needed by 'obj.host/deps/uv/src/unix/libuv.pthread-fixes.o', missing and no known rule to make it
-	if grep -q "android: remove pthread-fixes.c" deps/uv/ChangeLog; then
-		if grep -q "'src/unix/pthread-fixes.c'" ./deps/uv/uv.gyp; then
-			sed -i "s|'src/unix/pthread-fixes.c',|# 'src/unix/pthread-fixes.c',|" ./deps/uv/uv.gyp
-		fi
-	fi
+	# if grep -q "android: remove pthread-fixes.c" deps/uv/ChangeLog; then
+	# 	if grep -q "'src/unix/pthread-fixes.c'" ./deps/uv/uv.gyp; then
+	# 		sed -i "s|'src/unix/pthread-fixes.c',|# 'src/unix/pthread-fixes.c',|" ./deps/uv/uv.gyp
+	# 	fi
+	# fi
 }
 
 configure() {

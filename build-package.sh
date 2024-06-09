@@ -16,7 +16,8 @@ setup_target() {
 		case "${TARGET}" in
 		*-linux-android*)
 			ABI="$(echo "${TARGET}" | grep -E -o -e '.+-.+-android(eabi)?')"
-			# API="$(echo "${TARGET}" | sed -E 's/.+-linux-android(eabi)?//')"
+			API="$(echo "${TARGET}" | sed -E 's/.+-linux-android(eabi)?//')"
+			export ABI API
 			TOOLCHAIN="${TOOLCHAIN-${ANDROID_NDK_HOME}/toolchains/llvm/prebuilt/linux-x86_64}"
 
 			BUILD_PREFIX="${BUILD_PREFIX-${SCRIPT_DIR}/build/${ABI}}"
