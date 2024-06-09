@@ -1,7 +1,5 @@
 # Android SDK version must be at least 24 (Android 7.0)
 
-## Target to API 28 or disable test
-
 ## configure script
 # ld: error: undefined symbol: android_getCpuFeatures
 # >>> referenced by cpu_features.c# Use API28 or disable the test in ../../test/cctest/test_crypto_clienthello.cc
@@ -59,8 +57,10 @@ patch_source() {
 		sed -i 's:#include <cpu-features.h>:#include "cpu-features.c":' ./deps/zlib/cpu_features.c
 	fi
 
-	# ../deps/v8/src/base/debug/stack_trace_posix.cc:156:9: error: use of undeclared identifier 'backtrace_symbols'
-	echo >test/cctest/test_crypto_clienthello.cc
+	if test "${API}" -lt 28; then
+		# ../deps/v8/src/base/debug/stack_trace_posix.cc:156:9: error: use of undeclared identifier 'backtrace_symbols'
+		echo >test/cctest/test_crypto_clienthello.cc
+	fi
 
 	# ninja: error: '../../deps/uv/src/unix/pthread-fixes.c', needed by 'obj.host/deps/uv/src/unix/libuv.pthread-fixes.o', missing and no known rule to make it
 	if grep -q "android: remove pthread-fixes.c" deps/uv/ChangeLog; then
@@ -113,4 +113,6 @@ configure() {
 build() {
 	# make -j"${JOBS}"
 	ninja -C out/Release -j"${JOBS}"
+	# python3 tools/install.py install "" "${OUTPUT_DIR}" out/Release
+	python3 tools/install.py install "${OUTPUT_DIR}" ""
 }
