@@ -1,6 +1,6 @@
-PKG_HOMEPAGE="https://helix-editor.com/"
-PKG_DESCRIPTION="A post-modern modal text editor written in rust"
-PKG_LICENSE="MPL-2.0"
+PKG_HOMEPAGE="https://github.com/Canop/clima"
+PKG_DESCRIPTION="A minimal viewer for Termimad"
+PKG_LICENSE="MIT"
 
 PKG_VERSION="1.1.0"
 PKG_SRCURL=https://github.com/Canop/clima/archive/refs/tags/v${PKG_VERSION}.tar.gz
