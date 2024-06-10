@@ -34,6 +34,9 @@ setup_target() {
 						break
 					fi
 				done
+				if ! eval test "\${${ENV_KEY}+1}" && command -v "${tool}"; then
+					export "${ENV_KEY}=${tool}"
+				fi
 			done
 			;;
 		*-linux-musl)
