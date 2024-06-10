@@ -1,4 +1,6 @@
-## API >=23
+## API >=23 telldir
+# ../../lib/replace/tests/os2_delete.c:72:16: error: call to undeclared function 'telldir';
+# ../../lib/replace/tests/os2_delete.c:89:2: error: call to undeclared function 'seekdir';
 
 PKG_HOMEPAGE=https://talloc.samba.org/talloc/doc/html/index.html
 PKG_DESCRIPTION="Hierarchical, reference counted memory pool system with destructors"
