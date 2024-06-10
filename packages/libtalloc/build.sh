@@ -1,3 +1,5 @@
+## API >=23
+
 PKG_HOMEPAGE=https://talloc.samba.org/talloc/doc/html/index.html
 PKG_DESCRIPTION="Hierarchical, reference counted memory pool system with destructors"
 PKG_LICENSE="GPL-3.0"
