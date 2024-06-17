@@ -34,7 +34,7 @@ setup_target() {
 						break
 					fi
 				done
-				if ! eval test "\${${ENV_KEY}+1}" && command -v "${tool}"; then
+				if ! eval test "\${${ENV_KEY}+1}" && command -v "${tool}" >/dev/null; then
 					export "${ENV_KEY}=${tool}"
 				fi
 			done

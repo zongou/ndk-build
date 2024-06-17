@@ -1,13 +1,16 @@
-PKG_HOMEPAGE=https://xz.tukaani.org/xz-utils/
+# seccomp prevents SYS_landlock_create_ruleset
+PKG_EXTRA_CONFIGURE_ARGS="
+--enable-sandbox=no
+"
+
+PKG_HOMEPAGE=https://tukaani.org/xz/
 PKG_DESCRIPTION="XZ-format compression library"
 PKG_LICENSE="LGPL-2.1, GPL-2.0, GPL-3.0"
 PKG_LICENSE_FILE="COPYING, COPYING.GPLv2, COPYING.GPLv3, COPYING.LGPLv2.1"
+PKG_VERSION="5.6.2"
+PKG_SRCURL=https://github.com/tukaani-project/xz/releases/download/v$PKG_VERSION/xz-$PKG_VERSION.tar.xz
 
-PKG_VERSION="5.4.5"
-PKG_BASENAME="xz-${PKG_VERSION}"
-PKG_EXTNAME=.tar.gz
-# PKG_SRCURL=https://tukaani.org/xz/${PKG_BASENAME}${PKG_EXTNAME}
-PKG_SRCURL=https://github.com/tukaani-project/xz/releases/download/v${PKG_VERSION}/${PKG_BASENAME}${PKG_EXTNAME}
+PKG_BASENAME=xz-${PKG_VERSION}
 
 configure() {
 	## Small build, stripped
@@ -18,6 +21,7 @@ configure() {
 	./configure \
 		--enable-static \
 		--disable-shared \
+		--enable-sandbox=no \
 		--prefix="${OUTPUT_DIR}" \
 		--host="${TARGET}"
 }
