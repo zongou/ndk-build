@@ -15,7 +15,7 @@ PKG_DEPENDS="libtalloc"
 
 configure() {
 	patch -up1 <"${PKG_CONFIG_DIR}/base.patch"
-	# patch -up1 <"${PKG_CONFIG_DIR}/proot-try-TMPDIR.patch"
+	patch -up1 <"${PKG_CONFIG_DIR}/proot-try-TMPDIR.patch"
 }
 
 build() {
